@@ -1,6 +1,12 @@
 # tree.py
 
-from models import Branch, DTO, Node
+"""
+Defines bst operations and methods
+"""
+
+from tree.ui import Branch
+from tree.dto import DTO
+from bst.node import Node
 import random
 
 class Tree(object):
@@ -45,7 +51,6 @@ class Tree(object):
                 else:
                     temp.right = None
                     temp = temp.right
-
         dto.messages.append(f"Cutting branch.")
         dto.success = not self.find(x).success
         return dto
@@ -107,33 +112,41 @@ class Tree(object):
             return dto
         temp = self.root
         if temp:
-            dto.messages.append(f"Tree is not empty. Starting descent with root")
+            dto.messages.append("""
+Tree is not empty. Starting descent with root""")
         while 1:
             dto.messages.append(f"Current node value is {temp.data}")
             if x == temp.data:
                 temp.count += 1
-                dto.messages.append(f"{x} already exists in the tree. Incrementing count")
+                dto.messages.append(f"""
+{x} already exists in the tree. Incrementing count""")
                 break
             elif x < temp.data:
-                dto.messages.append(f"{x} is smaller or equal to {temp.data}. Go left.")
+                dto.messages.append(f"""
+{x} is smaller or equal to {temp.data}. Go left.""")
                 if not temp.left:
                     temp.left = Node(data=x)
                     temp.left.parent = temp
-                    dto.messages.append(f"Left is empty. Inserting {x} left of {temp.data}")
+                    dto.messages.append(f"""
+Left is empty. Inserting {x} left of {temp.data}""")
                     break
                 else:
                     temp = temp.left
-                    dto.messages.append(f"Left is not empty. Setting left as current node.")
+                    dto.messages.append(f"""
+Left is not empty. Setting left as current node.""")
             else:
-                dto.messages.append(f"{x} is larget than {temp.data}. Go right.")
+                dto.messages.append(f"""
+{x} is larget than {temp.data}. Go right.""")
                 if not temp.right:
                     temp.right = Node(data=x)
                     temp.right.parent = temp
-                    dto.messages.append(f"Right is empty. Inserting {x} right of {temp.data}")
+                    dto.messages.append(f"""
+Right is empty. Inserting {x} right of {temp.data}""")
                     break
                 else:
                     temp = temp.right
-                    dto.messages.append(f"Right is not empty. Setting right as current node.")
+                    dto.messages.append(f"""
+Right is not empty. Setting right as current node.""")
         dto.success = True
         return dto
 
@@ -149,6 +162,10 @@ class Tree(object):
             traversal = self.inorder
         elif style == 2:
             traversal = self.postorder
+        else:
+            dto.success = False
+            dto.messages.append(f"Traversal style is not valid: got {style}")
+            return dto
         return traversal()
 
     def inorder(self):
@@ -246,7 +263,8 @@ class Tree(object):
             return dto
         response = self.inorder()
         if not response.success:
-            dto.message.append(f"Inorder returned unsuccessful. Exitting balance early")
+            dto.message.append("""
+Inorder returned unsuccessful. Exitting balance early""")
             return dto
         # don't clear out tree yet. need to find the correct ordering from data
         # nodes = [response.data[m]] # holds correct ordering for insertion
@@ -297,12 +315,24 @@ class Tree(object):
                 if depth > 0:
                     prefix_add = Branch.Blank if last else Branch.Line
                 if node.left and node.right:
-                    nodes.insert(0, (node.left, True, depth + 1, prefix + prefix_add))
-                    nodes.insert(0, (node.right, False, depth + 1, prefix + prefix_add))
+                    nodes.insert(0, (node.left, 
+                                     True, 
+                                     depth + 1, 
+                                     prefix + prefix_add))
+                    nodes.insert(0, (node.right, 
+                                     False, 
+                                     depth + 1, 
+                                     prefix + prefix_add))
                 elif node.right:
-                    nodes.insert(0, (node.right, True, depth + 1, prefix + prefix_add))
+                    nodes.insert(0, (node.right, 
+                                     True, 
+                                     depth + 1, 
+                                     prefix + prefix_add))
                 else:
-                    nodes.insert(0, (node.left, True, depth + 1, prefix + prefix_add))
+                    nodes.insert(0, (node.left, 
+                                     True, 
+                                     depth + 1, 
+                                     prefix + prefix_add))
             else:
                 leaves += 1
             branch = ""
@@ -314,7 +344,11 @@ class Tree(object):
         dto.messages.append(f"Nodes: {count}, Leaves: {leaves}")
         return dto
 
-Tree.actions = set(fn for fn in dir(Tree) if callable(getattr(Tree, fn)) and not fn.startswith('__'))
+# adds all method names in tree object to an actions dictionary
+Tree.actions = set(fn 
+                    for fn in dir(Tree) 
+                        if callable(getattr(Tree, fn)) 
+                            and not fn.startswith('__'))
 
 if __name__ == "__main__":
     print("Usage: py .")

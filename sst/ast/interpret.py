@@ -17,7 +17,6 @@ Analysis:
 """
 
 from dataclasses import dataclass as struct
-from repl import user_input
 
 @struct
 class Token:
@@ -141,5 +140,6 @@ def handle_input(user_input):
     return output
 
 if __name__ == "__main__":
+    from repl import user_input
     user_input(fn=handle_input)
 

@@ -1,8 +1,10 @@
 # repl.py
+
 """
 Simple loop function to take user input
 """
-def user_input(fn, prompt='>>> '):
+
+def user_input(input_handler, prompt='>>> '):
     while 1:
         try:
             user_input = input(prompt)
@@ -11,7 +13,7 @@ def user_input(fn, prompt='>>> '):
         else:
             if user_input == 'exit':
                 break
-            output = fn(user_input)
+            output = input_handler(user_input)
             message = '\n'.join(output)
             if message:
                 print(message)

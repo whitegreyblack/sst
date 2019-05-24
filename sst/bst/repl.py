@@ -1,7 +1,16 @@
-from tree import Tree
-from models import DTO
+# bst.py
+
+"""
+Interface that will use ast to read commands for bst operations
+"""
+
+from bst.tree import Tree
+from bst.models import DTO
 
 def parse(dto, cache=None):
+    """
+    Evaluates dto returned by bst operations
+    """
     response = DTO()
     for d in dto.data:
         try:
@@ -14,7 +23,8 @@ def parse(dto, cache=None):
                     response.data.extend(cache)
                     cache = [] # make sure we cannot reuse
             else:
-                response.messages.append(f"Error converting '{d}' to int. Skipping")
+                response.messages.append(f"""
+Error converting '{d}' to int. Skipping""")
         else:
             response.data.append(tokenized_int)
     response.success = bool(len(response.data))
@@ -23,7 +33,11 @@ def parse(dto, cache=None):
     return response
 
 def main():
-    """TODO: cache last result only"""
+    """
+    Simple repl to work with tree operations
+    
+    TODO: cache last result only
+    """
     data = None
     tree = Tree()
     while 1:
@@ -40,8 +54,10 @@ def main():
             else:
                 print("No data cached")
             continue
-        valid_action = action in Tree.actions # make sure command is valid
-        valid_method = hasattr(Tree, action) # make sure it's implemented
+        # make sure command is valid
+        valid_action = action in Tree.actions
+        # make sure it's implemented
+        valid_method = hasattr(Tree, action)
         if not (valid_action and valid_method):
             print("Command not found")
             continue
