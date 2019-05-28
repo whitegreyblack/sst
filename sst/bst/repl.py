@@ -5,7 +5,7 @@ Interface that will use ast to read commands for bst operations
 """
 
 from bst.tree import Tree
-from bst.models import DTO
+from tree.dto import DTO
 
 def parse(dto, cache=None):
     """
@@ -18,13 +18,14 @@ def parse(dto, cache=None):
         except ValueError:
             if d == 'last' or d == 'x':
                 if not cache:
-                    response.messages.append(f"Cache is empty. Skipping")
+                    response.messages.append("""
+Cache is empty. Command not executed."""[1:])
                 else:
                     response.data.extend(cache)
                     cache = [] # make sure we cannot reuse
             else:
                 response.messages.append(f"""
-Error converting '{d}' to int. Skipping""")
+Error converting '{d}' to int. Command not executed."""[1:])
         else:
             response.data.append(tokenized_int)
     response.success = bool(len(response.data))

@@ -20,6 +20,11 @@ class Tree(object):
         return f"Tree(root={data})"
 
     def new(self):
+        if self.root is None:
+            return DTO(
+                messages=["Tree is already empty. Command not executed"], 
+                success=False
+            )
         self.root = None 
         return DTO(messages=["Tree was cut down"], success=True)
 
@@ -113,40 +118,40 @@ class Tree(object):
         temp = self.root
         if temp:
             dto.messages.append("""
-Tree is not empty. Starting descent with root""")
+Tree is not empty. Starting descent with root"""[1:])
         while 1:
             dto.messages.append(f"Current node value is {temp.data}")
             if x == temp.data:
                 temp.count += 1
                 dto.messages.append(f"""
-{x} already exists in the tree. Incrementing count""")
+{x} already exists in the tree. Incrementing count"""[1:])
                 break
             elif x < temp.data:
                 dto.messages.append(f"""
-{x} is smaller or equal to {temp.data}. Go left.""")
+{x} is smaller or equal to {temp.data}. Go left."""[1:])
                 if not temp.left:
                     temp.left = Node(data=x)
                     temp.left.parent = temp
                     dto.messages.append(f"""
-Left is empty. Inserting {x} left of {temp.data}""")
+Left is empty. Inserting {x} left of {temp.data}"""[1:])
                     break
                 else:
                     temp = temp.left
                     dto.messages.append(f"""
-Left is not empty. Setting left as current node.""")
+Left is not empty. Setting left as current node."""[1:])
             else:
                 dto.messages.append(f"""
-{x} is larget than {temp.data}. Go right.""")
+{x} is larget than {temp.data}. Go right."""[1:])
                 if not temp.right:
                     temp.right = Node(data=x)
                     temp.right.parent = temp
                     dto.messages.append(f"""
-Right is empty. Inserting {x} right of {temp.data}""")
+Right is empty. Inserting {x} right of {temp.data}"""[1:])
                     break
                 else:
                     temp = temp.right
                     dto.messages.append(f"""
-Right is not empty. Setting right as current node.""")
+Right is not empty. Setting right as current node."""[1:])
         dto.success = True
         return dto
 
@@ -264,7 +269,7 @@ Right is not empty. Setting right as current node.""")
         response = self.inorder()
         if not response.success:
             dto.message.append("""
-Inorder returned unsuccessful. Exitting balance early""")
+Inorder returned unsuccessful. Exitting balance early"""[1:])
             return dto
         # don't clear out tree yet. need to find the correct ordering from data
         # nodes = [response.data[m]] # holds correct ordering for insertion
@@ -314,25 +319,18 @@ Inorder returned unsuccessful. Exitting balance early""")
                 prefix_add = ""
                 if depth > 0:
                     prefix_add = Branch.Blank if last else Branch.Line
+                left = right = None    
                 if node.left and node.right:
-                    nodes.insert(0, (node.left, 
-                                     True, 
-                                     depth + 1, 
-                                     prefix + prefix_add))
-                    nodes.insert(0, (node.right, 
-                                     False, 
-                                     depth + 1, 
-                                     prefix + prefix_add))
+                    left = (node.left, True, depth + 1, prefix + prefix_add)
+                    right = (node.right, False, depth + 1, prefix + prefix_add)
                 elif node.right:
-                    nodes.insert(0, (node.right, 
-                                     True, 
-                                     depth + 1, 
-                                     prefix + prefix_add))
+                    right = (node.right, True, depth + 1, prefix + prefix_add)
                 else:
-                    nodes.insert(0, (node.left, 
-                                     True, 
-                                     depth + 1, 
-                                     prefix + prefix_add))
+                    left = (node.right, True, depth + 1, prefix + prefix_add)
+                if left:
+                    nodes.insert(0, left)
+                if right:
+                    nodes.insert(0, right)
             else:
                 leaves += 1
             branch = ""

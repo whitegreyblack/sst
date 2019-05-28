@@ -64,6 +64,9 @@ eval:
     t.tree()
 
 Insert syntax:
-    insert 0...9
-    insert random 100
+    insert 0..9  (inclusive)
+    insert 0...9 (exclusive)
+    insert random 100 (repeats included)
     insert 0 1 2 3
+    insert -> INT
+           |> WORD -> INT
