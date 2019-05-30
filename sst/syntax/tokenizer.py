@@ -1,4 +1,4 @@
-# ast_tokenizer.py
+# tokenizer.py
 
 """
 @parameter = text: str NOT NONE
@@ -60,6 +60,7 @@ def tokenize(text) -> list:
     
     Currently does not handle special characters
     """
+    stack = []
     tokens = []
     if not text:
         return tokens
@@ -102,7 +103,8 @@ def tokenize(text) -> list:
                 print(mixed_error(text, pos))
                 return tokens
             if is_symbol(char) or not char_is_valid or char is space:
-                tokens.append(Token(text[beg:pos], TokenType.NUMBER))
+                stack.append(Token(text[beg:pos], TokenType.NUMBER))
+                # tokens.append(Token(text[beg:pos], TokenType.NUMBER))
         elif is_symbol(char):
             # This is the only block to use the ExactTokenTypes class
             char_is_symbol = True
@@ -116,11 +118,15 @@ def tokenize(text) -> list:
                 return tokens
             if is_number(char) or not char_is_valid or char is space:
                 symbol = text[beg:pos]
-                tokentype = Ops.get(symbol.TokenType.OP)
+                tokentype = Ops.get(symbol, TokenType.OP)
                 tokens.append(Token(symbol, tokentype))
+                tokens += stack
+                stack = []
         else:
             print(invalid_error(text, pos))
             return tokens
+    tokens += stack
+    tokens.append(Token('', TokenType.END))
     return tokens
 
 def handle_input(input_stream):
@@ -134,9 +140,12 @@ def handle_input(input_stream):
     return output
 
 if __name__ == "__main__":
-    from syntax.repl import user_input
-    from syntax.reader import from_file
+    from util.repl import user_input
+    from util.reader import from_file
+    from util.output_handler import handle_output
 
-    from_file(input_handler=handle_input, file_name='syntax\instructions.txt')
-    user_input(input_handler=handle_input)
+    from_file(input_handler=handle_input, 
+              output_handler=handle_output, 
+              file_name='instructions.txt')
+    user_input(input_handler=handle_input, output_handler=handle_output)
 

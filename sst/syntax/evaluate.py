@@ -4,56 +4,47 @@
 Evaluates typed tokens from interpret.py
 """
 
-from dataclasses import dataclass as struct
-from syntax.interpret import LETTER, NUMBER, tokenize
-from tree.dto import DTO
+from syntax.tokenizer import tokenize
+from syntax.token import TokenType
+from syntax.parser import parse
+from util.dto import DTO
 import difflib
 
-@struct
-class Statement:
-    func: str
-    args: list
-
-actions = {
-    'insert',
-    'find'
+op_expression = {
+    '..': lambda x, y: ' '.join(str(i) for i in range(x, y)),
+    '...': lambda x, y: ' '.join(str(i) for i in range(x, y+1))
 }
 
-def evaluate(tokens):
-    dto = DTO()
-    while tokens:
-        token = tokens.pop(0)
-        if token.type == LETTER:
-            if token.text in actions:
-                dto.messages.append(f"action: {token.text}")
-            else:
-                commands_accepted = "\t" + "\n".join(actions)
-                dto.messages.append(f"""
-eval: '{token.text}' is not a valid command. 
-Commands accepted: {commands_accepted}"""[1:])
-                close_match = difflib.get_close_matches(token.text, actions)
-                if close_match:
-                    dto.messages.append(f"""
-\nThe most similar command is:\n\t{close_match.pop()}"""[1:])
-                break
-        else:
-            dto.messages.append(f"arg: {token.text}")
-    dto.success = True
-    return dto
+def evaluate(nodes):
+    expressions = []
+    if not nodes:
+        return expressions
+    for node in nodes:
+        expression = []
+        expression.append(node.action.text)
+        for arg in node.data:
+            if arg.type == TokenType.NUMBER:
+                expression.append(arg.text)
+        expressions.append(expression)
+    return expressions
 
 def handle_input(user_input):
-    output = []
     tokens = tokenize(user_input)
-    response = evaluate(tokens)
-    output.append(response.message)
-    return output
+    nodes = parse(tokens)
+    expressions = evaluate(nodes)
+    return expressions
 
 if __name__ == "__main__":
-    from ast.repl import user_input
+    from util.repl import user_input
+    from util.reader import from_file
+    from util.output_handler import handle_output
+    """
     import sys
 
     if sys.argv[1:]:
         if sys.argv[1] == '--help':
             print("python -m evaluate")
-
+    """
+    from_file(handle_input, handle_output, 'instructions.txt')
     user_input(input_handler=handle_input)
+

@@ -45,11 +45,10 @@ def main():
         action, *args = input('>>> ').split(' ')
         if action == 'exit':
             break
-        elif action == 'help':
+        if action == 'help':
             print('  ' + '\n  '.join(sorted(Tree.actions)))
             continue
-            print('right init', right)
-        elif action == 'last':
+        if action == 'last':
             if response.data:
                 print(' '.join(str(d) for d in response.data))
             else:

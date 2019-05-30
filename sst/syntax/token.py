@@ -1,4 +1,4 @@
-# ast_token.py
+# token.py
 
 """
 Holds different grammar and syntax token classes
@@ -13,12 +13,13 @@ class TokenType:
     OP = 'OP'
     NAME = 'NAME'
     NUMBER = 'NUMBER'
+    END = 'END'
 
 op_token_types = {
     '.': 'DOT',
     '..': 'RANGE_INCL',
     '...': 'RANGE_EXCL',
-    '-': 'DOT',
+    '-': 'MINUS',
     '+': 'PLUS',
     '->': 'RARROW'
 }
