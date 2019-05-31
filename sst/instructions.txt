@@ -1,6 +1,8 @@
 tree
 insert 1
 insert -1
+insert 1 2..30 200
+insert -1 2..30 -200
 insert 1 2 3
 insert 1..100
 insert 1...100

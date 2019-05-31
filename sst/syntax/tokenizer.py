@@ -93,6 +93,8 @@ def tokenize(text) -> list:
             if not char_is_valid or char is space:
                 tokens.append(Token(text[beg:pos], TokenType.NAME))
         elif is_number(char):
+            tokens += stack
+            stack = []
             char_is_number = True
             while char_is_valid and char_is_number:
                 pos += 1
