@@ -1,8 +1,6 @@
-insert 7 4 6 9 0 8 2 3 1 5
-insert 0...9
-insert 0..9
-insert random 10 0 100
-
 insert 1 9..199
 token(insert, NAME) token(1, INT) token(1, INT) token(.., OP) token(1, INT)
 
+expr
+
+factor factor expr factor

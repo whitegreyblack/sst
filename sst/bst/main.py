@@ -5,12 +5,10 @@ Interface that will use ast to read commands for bst operations
 """
 
 from bst.tree import Tree
-from tree.dto import DTO
+from util.dto import DTO
 
 def parse(dto, cache=None):
-    """
-    Evaluates dto returned by bst operations
-    """
+    """Evaluates dto returned by bst operations"""
     response = DTO()
     for d in dto.data:
         try:
@@ -34,11 +32,7 @@ Error converting '{d}' to int. Command not executed."""[1:])
     return response
 
 def main():
-    """
-    Simple repl to work with tree operations
-    
-    TODO: cache last result only
-    """
+    """Simple repl to work with tree operations"""
     data = None
     tree = Tree()
     while 1:

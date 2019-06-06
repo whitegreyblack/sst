@@ -4,8 +4,8 @@
 Defines bst operations and methods
 """
 
-from tree.ui import Branch
-from tree.dto import DTO
+from util.ui import Branch
+from util.dto import DTO
 from bst.node import Node
 import random
 
