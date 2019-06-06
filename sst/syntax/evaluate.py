@@ -46,5 +46,5 @@ if __name__ == "__main__":
             print("python -m evaluate")
     """
     from_file(handle_input, handle_output, 'instructions.txt')
-    user_input(input_handler=handle_input)
+    user_input(input_handler=handle_input, output_handler=handle_output)
 
