@@ -1,9 +1,7 @@
 # tokenizer.py
 
 """
-@parameter = text: str NOT NONE
-
-parses text or file input into typed tokens.
+parses text or file input into token types.
 
 Analysis:
     This function allows more control and versatility over input than splitting
