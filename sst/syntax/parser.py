@@ -6,7 +6,8 @@ from syntax.tokenizer import tokenize
 from syntax.token import TokenType
 from syntax.node import Node
 
-def parse(tokens) -> object:
+
+def parse(tokens: list) -> object:
     """
     Reads tokens to create a simple abstract syntax tree
     """
@@ -14,7 +15,7 @@ def parse(tokens) -> object:
     if not tokens:
         return nodes 
     while tokens:
-        # get action nodes
+        # iterate action nodes
         token, *tokens = tokens
         if token.type is not TokenType.NAME:
             raise Exception(f"{token} is not an NAME token")

@@ -144,8 +144,10 @@ if __name__ == "__main__":
     from util.reader import from_file
     from util.output_handler import handle_output
 
-    from_file(input_handler=handle_input, 
-              output_handler=handle_output, 
-              file_name='instructions.txt')
+    from_file(
+        input_handler=handle_input, 
+        output_handler=handle_output, 
+        file_name='instructions.txt'
+    )
     user_input(input_handler=handle_input, output_handler=handle_output)
 

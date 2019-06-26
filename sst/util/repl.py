@@ -6,6 +6,7 @@ Simple loop function to take user input
 
 from util.output_handler import handle_output
 
+
 def user_input(input_handler, output_handler, prompt='>>> '):
     """
     Takes in input from user then passes input to input_handler for other code 
@@ -23,6 +24,8 @@ def user_input(input_handler, output_handler, prompt='>>> '):
             handle_output(output)
 
 if __name__ == "__main__":
-    user_input(input_handler=lambda x: [f'got {x}'], 
-               output_handler=handle_output)
+    user_input(
+        input_handler=lambda x: [f'got {x}'], 
+        output_handler=handle_output
+    )
 
